@@ -5,6 +5,7 @@ DEFAULT_OAUTH_URL = 'https://allegro.pl/auth/oauth'
 DEFAULT_REDIRECT_URI = 'http://localhost:8000'
 DEFAULT_CLIENT_ID = "1c9ecb33f4374284bf16ef6f48e8891a"
 DEFAULT_CLIENT_SECRET = "7HM1XgQYhiopMIZ9XGVbhjXfZmdxSuXCrQzgBE7IdSYplEx9PDQf2Q71l9L8m0aM"
+DEFAULT_API_URL = "https://api.allegro.pl"
 
 def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SECRET, redirect_uri=DEFAULT_REDIRECT_URI, oauth_url=DEFAULT_OAUTH_URL):
 
@@ -16,7 +17,6 @@ def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SE
     print(auth_url)
     parsed_redirect_uri = requests.utils.urlparse(redirect_uri)
 
-    print(parsed_redirect_uri)
 
     server_address = parsed_redirect_uri.hostname, parsed_redirect_uri.port
 
@@ -28,8 +28,8 @@ def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SE
             self.send_response(200,"ok")
             self.send_header("Content-Type", "text/html")
             self.end_headers()
-
-            self.server.path = self.path
+            # self.server.path = self.path
+            # print(self.server.path)
             self.server.access_code = self.path.rsplit("?code=", 1)[-1]
 
 
@@ -67,6 +67,25 @@ def sign_in(client_id, client_secret, access_code, redirect_uri='http://localhos
 # Delete default client id and client secret in get_access_code()
 
 access_code = get_access_code()
-sign_in(DEFAULT_CLIENT_ID, DEFAULT_CLIENT_SECRET,access_code)
+token = sign_in(DEFAULT_CLIENT_ID, DEFAULT_CLIENT_SECRET,access_code)
+access_token = token["access_token"]
 
-def searchOffer(token, )
+headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
+           "Accept": "appliaction/vnd.allegro.public.v1+json", "Authorization": "Bearer {}".format(access_token)}
+
+with requests.Session() as session:
+    session.headers.update(headers)
+
+    response = session.get(DEFAULT_API_URL + "/after-sales-service-conditions/warranties",
+                           params = {"sellerId" : "21105696"})
+
+    print(response.json())
+
+
+
+
+
+
+# URL = "https://api.allegro.pl/sale/offers"
+# PARAMS = {""}
+# r = requests.get(url=URL)
