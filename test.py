@@ -2,13 +2,15 @@ import requests
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import webbrowser
 
+
+
 DEFAULT_OAUTH_URL = 'https://allegro.pl/auth/oauth'
 DEFAULT_REDIRECT_URI = 'http://localhost:8000'
 DEFAULT_CLIENT_ID = "1c9ecb33f4374284bf16ef6f48e8891a"
 DEFAULT_CLIENT_SECRET = "7HM1XgQYhiopMIZ9XGVbhjXfZmdxSuXCrQzgBE7IdSYplEx9PDQf2Q71l9L8m0aM"
 DEFAULT_API_URL = "https://api.allegro.pl"
 
-
+# Implementing function to authorize app and obtain access_code
 def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SECRET, redirect_uri=DEFAULT_REDIRECT_URI,
                     oauth_url=DEFAULT_OAUTH_URL):
     auth_url = '{}/authorize' \
@@ -17,20 +19,25 @@ def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SE
                '&client_secret={}' \
                '&redirect_uri={}'.format(oauth_url, client_id, client_secret, redirect_uri)
 
+# parsing to separate hostname and port
     parsed_redirect_uri = requests.utils.urlparse(redirect_uri)
-
     server_address = parsed_redirect_uri.hostname, parsed_redirect_uri.port
 
+# class extending BaseHttpRequestHandler, will help us handle GET request
     class AllegroAuthHandler(BaseHTTPRequestHandler):
         def __init__(self, request, address, server):
             super().__init__(request, address, server)
 
         def do_GET(self):
+            # Sends a response header, logs the accepted request
             self.send_response(200, "ok")
+            # writes header to the output stream
+            # (header keyword, header value)
             self.send_header("Content-Type", "text/html")
+            # sends a blank line indicating the end of the HTTP headers in response, also invokes flush_headers()
+            # which flushes the internal headers buffer
             self.end_headers()
-            # self.server.path = self.path
-            # print(self.server.path)
+            # path contains the request path
             self.server.access_code = self.path.rsplit("?code=", 1)[-1]
 
     print("server_address: ", server_address)
