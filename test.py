@@ -1,37 +1,37 @@
 import requests
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import webbrowser
+
 DEFAULT_OAUTH_URL = 'https://allegro.pl/auth/oauth'
 DEFAULT_REDIRECT_URI = 'http://localhost:8000'
 DEFAULT_CLIENT_ID = "1c9ecb33f4374284bf16ef6f48e8891a"
 DEFAULT_CLIENT_SECRET = "7HM1XgQYhiopMIZ9XGVbhjXfZmdxSuXCrQzgBE7IdSYplEx9PDQf2Q71l9L8m0aM"
 DEFAULT_API_URL = "https://api.allegro.pl"
 
-def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SECRET, redirect_uri=DEFAULT_REDIRECT_URI, oauth_url=DEFAULT_OAUTH_URL):
 
+def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SECRET, redirect_uri=DEFAULT_REDIRECT_URI,
+                    oauth_url=DEFAULT_OAUTH_URL):
     auth_url = '{}/authorize' \
                '?response_type=code' \
                '&client_id={}' \
                '&client_secret={}' \
-               '&redirect_uri={}'.format(oauth_url,client_id,client_secret,redirect_uri)
-    print(auth_url)
-    parsed_redirect_uri = requests.utils.urlparse(redirect_uri)
+               '&redirect_uri={}'.format(oauth_url, client_id, client_secret, redirect_uri)
 
+    parsed_redirect_uri = requests.utils.urlparse(redirect_uri)
 
     server_address = parsed_redirect_uri.hostname, parsed_redirect_uri.port
 
     class AllegroAuthHandler(BaseHTTPRequestHandler):
-        def __init__(self, request,address, server):
-            super().__init__(request,address,server)
+        def __init__(self, request, address, server):
+            super().__init__(request, address, server)
 
         def do_GET(self):
-            self.send_response(200,"ok")
+            self.send_response(200, "ok")
             self.send_header("Content-Type", "text/html")
             self.end_headers()
             # self.server.path = self.path
             # print(self.server.path)
             self.server.access_code = self.path.rsplit("?code=", 1)[-1]
-
 
     print("server_address: ", server_address)
 
@@ -58,33 +58,32 @@ def sign_in(client_id, client_secret, access_code, redirect_uri='http://localhos
                          'redirect_uri': redirect_uri}
 
     response = requests.post(url=token_url,
-                             auth=requests.auth.HTTPBasicAuth(client_id,client_secret),
-                             data = access_token_data)
-    print(response.json())
+                             auth=requests.auth.HTTPBasicAuth(client_id, client_secret),
+                             data=access_token_data)
     return response.json()
+
 
 # TO DO:
 # Delete default client id and client secret in get_access_code()
 
 access_code = get_access_code()
-token = sign_in(DEFAULT_CLIENT_ID, DEFAULT_CLIENT_SECRET,access_code)
+token = sign_in(DEFAULT_CLIENT_ID, DEFAULT_CLIENT_SECRET, access_code)
 access_token = token["access_token"]
 
 headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
-           "Accept": "appliaction/vnd.allegro.public.v1+json", "Authorization": "Bearer {}".format(access_token)}
+           "Accept": 'application/vnd.allegro.public.v1+json', "Authorization": "Bearer {}".format(access_token)}
 
 with requests.Session() as session:
     session.headers.update(headers)
 
-    response = session.get(DEFAULT_API_URL + "/after-sales-service-conditions/warranties",
-                           params = {"sellerId" : "21105696"})
+    response = session.get(DEFAULT_API_URL + "/offers/listing",
+                           params={
+                                   "phrase": "NeoNail Lakier Hybrydowy Kolory",
+                                   "price.from": "60"})
+    data = response.json()
 
-    print(response.json())
-
-
-
-
-
+print(data.keys())
+print(data['items'])
 
 # URL = "https://api.allegro.pl/sale/offers"
 # PARAMS = {""}
