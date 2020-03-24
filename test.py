@@ -2,13 +2,12 @@ import requests
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import webbrowser
 
-
-
 DEFAULT_OAUTH_URL = 'https://allegro.pl/auth/oauth'
 DEFAULT_REDIRECT_URI = 'http://localhost:8000'
 DEFAULT_CLIENT_ID = "1c9ecb33f4374284bf16ef6f48e8891a"
 DEFAULT_CLIENT_SECRET = "7HM1XgQYhiopMIZ9XGVbhjXfZmdxSuXCrQzgBE7IdSYplEx9PDQf2Q71l9L8m0aM"
 DEFAULT_API_URL = "https://api.allegro.pl"
+
 
 # Implementing function to authorize app and obtain access_code
 def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SECRET, redirect_uri=DEFAULT_REDIRECT_URI,
@@ -19,12 +18,12 @@ def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SE
                '&client_secret={}' \
                '&redirect_uri={}'.format(oauth_url, client_id, client_secret, redirect_uri)
 
-# parsing to separate hostname and port
+    # parsing to separate hostname and port
     parsed_redirect_uri = requests.utils.urlparse(redirect_uri)
     server_address = parsed_redirect_uri.hostname, parsed_redirect_uri.port
 
-# class extending BaseHttpRequestHandler, will help us handle GET request
-    class AllegroAuthHandler(BaseHTTPRequestHandler):
+    # class extending BaseHttpRequestHandler, will help us handle GET request
+    class AllegroHTTPAuthHandler(BaseHTTPRequestHandler):
         def __init__(self, request, address, server):
             super().__init__(request, address, server)
 
@@ -43,7 +42,7 @@ def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SE
     print("server_address: ", server_address)
 
     webbrowser.open(auth_url)
-    httpd = HTTPServer(server_address, AllegroAuthHandler)
+    httpd = HTTPServer(server_address, AllegroHTTPAuthHandler)
     print('Waiting for response with access_code from Allegro.pl (user authorization in progress)...')
 
     httpd.handle_request()
@@ -84,13 +83,15 @@ with requests.Session() as session:
     session.headers.update(headers)
 
     response = session.get(DEFAULT_API_URL + "/offers/listing",
-                           params={
-                                   "phrase": "NeoNail Lakier Hybrydowy Kolory",
-                                   "price.from": "60"})
+                           params={"category.id": "257347",
+                                   "location.city": "Krakow"})
+
     data = response.json()
 
-print(data.keys())
-print(data['items'])
+print(data["searchMeta"])
+for categories in data['filters']:
+    print(categories)
+
 
 # URL = "https://api.allegro.pl/sale/offers"
 # PARAMS = {""}
