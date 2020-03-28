@@ -1,9 +1,7 @@
 import mysql.connector
 
 
-DEFAULT_DB_USERNAME = "PbjuhPcXDr"
-DEFAULT_DB_NAME = "PbjuhPcXDr"
-DEFAULT_DB_PASSWORD = "e0edpGcixq"
+
 DEFAULT_DB_SERVER = "remotemysql.com"
 DEFAULT_DB_PORT = "3306"
 
