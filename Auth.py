@@ -1,6 +1,7 @@
 import requests
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import webbrowser
+import json
 
 DEFAULT_OAUTH_URL = 'https://allegro.pl/auth/oauth'
 DEFAULT_REDIRECT_URI = 'http://localhost:8000'
@@ -40,11 +41,12 @@ def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SE
             self.server.access_code = self.path.rsplit("?code=", 1)[-1]
 
     print("server_address: ", server_address)
-
+    # giving access to app
     webbrowser.open(auth_url)
+    #starting httpserver on localhost address
     httpd = HTTPServer(server_address, AllegroHTTPAuthHandler)
     print('Waiting for response with access_code from Allegro.pl (user authorization in progress)...')
-
+    #handle one request
     httpd.handle_request()
 
     httpd.server_close()
@@ -76,23 +78,8 @@ access_code = get_access_code()
 token = sign_in(DEFAULT_CLIENT_ID, DEFAULT_CLIENT_SECRET, access_code)
 access_token = token["access_token"]
 
-headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
-           "Accept": 'application/vnd.allegro.public.v1+json', "Authorization": "Bearer {}".format(access_token)}
-
-with requests.Session() as session:
-    session.headers.update(headers)
-
-    response = session.get(DEFAULT_API_URL + "/offers/listing",
-                           params={"category.id": "257347",
-                                   "location.city": "Krakow"})
-
-    data = response.json()
-
-print(data["searchMeta"])
-for categories in data['filters']:
-    print(categories)
 
 
-# URL = "https://api.allegro.pl/sale/offers"
-# PARAMS = {""}
-# r = requests.get(url=URL)
+
+
+
