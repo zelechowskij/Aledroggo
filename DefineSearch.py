@@ -29,10 +29,16 @@ def searchStart():
 
             temp_category = input()
             params["category.id"] = temp_category
+
+        # when displaying filters add count parameter
+        # important to distinct filter type e.g. multi or text type!
+
         filters = {}
         for filter in data['filters']:
             print(filter)
-            print(filter['name'] + filter['name'])
+            print(filter['name'])
+            for value in filter['values']:
+                print(str(list(value.values())[1]) + ' ' + str(list(value.values())[0]))
 
 
 
