@@ -1,6 +1,6 @@
 import requests
 import Auth
-
+from pprint import pprint
 
 # TO DO:
 # prettyprint for json
@@ -13,22 +13,28 @@ def searchStart():
                "Accept": 'application/vnd.allegro.public.v1+json',
                "Authorization": "Bearer {}".format(Auth.access_token)}
     phrase = "xiaomi redmi note 8 pro"
-    params = {"phrase": phrase}
+    category = "300525"
+    params = {"phrase": phrase, 'category.id': category}
 
     with requests.Session() as session:
         session.headers.update(headers)
-        data = {'categories': {'subcategories': [{'id': 'cos'}, {'id': 'cos2'}]}}
-
-        print(len(data['categories']["subcategories"]))
+        data = {'categories': {'subcategories': [{'id': 'temp'}, {'id': 'temp2'}]}}
 
         while len(data['categories']['subcategories']) != 1:
             response = session.get(DEFAULT_SEARCH_URL, params=params)
             data = response.json()
+
             for categorie in data["categories"]["subcategories"]:
-                print(categorie["name"] + ' ' + categorie["id"])
+                pprint(categorie["name"] + ' ' + categorie["id"])
 
             temp_category = input()
             params["category.id"] = temp_category
+        filters = {}
+        for filter in data['filters']:
+            print(filter)
+            print(filter['name'] + filter['name'])
+
+
 
 
 searchStart()
