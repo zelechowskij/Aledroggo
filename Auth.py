@@ -43,10 +43,10 @@ def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SE
     print("server_address: ", server_address)
     # giving access to app
     webbrowser.open(auth_url)
-    #starting httpserver on localhost address
+    # starting httpserver on localhost address
     httpd = HTTPServer(server_address, AllegroHTTPAuthHandler)
     print('Waiting for response with access_code from Allegro.pl (user authorization in progress)...')
-    #handle one request
+    # handle one request
     httpd.handle_request()
 
     httpd.server_close()
