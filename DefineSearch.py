@@ -56,7 +56,7 @@ def searchStart():
                 choice = input()
                 if choice == 'none':
                     print('none')
-                    break
+                    continue
                 else:
                     choice = choice.split(',')
                     for index in choice:
@@ -74,8 +74,9 @@ def searchStart():
                 first = False
             print(filter_temp)
         print(filter_temp)
-        # with open('filter.csv', mode='w') as filter_file:
-        #     filter_writer = csv.writer(filter_temp)
+        # with open(filter.csv, 'w') as f:
+        #     for key in filter_temp.keys():
+        #         f.write("%s,%s\n" % (key, filter_temp[key]))
 
             # POGMATWANE TO MAX WEŹ TO NAPRAW!
             # choice = input()
