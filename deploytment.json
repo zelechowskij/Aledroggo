@@ -1,8 +1,0 @@
-{
-  "services": [{
-    "name": "<your-instance-name>",
-    "type": "DBAAS",
-    "username": "<your-db-username>",
-    "password": "<your-db-user-password>"
-  }]
-}

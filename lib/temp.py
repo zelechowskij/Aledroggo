@@ -1,16 +1,9 @@
-from math import gcd
-import math
 import cx_Oracle
-import random
-
-counter = 0
-n = 10000000
-for i in range(n):
-    first = random.randint(1, 1000)
-    second = random.randint(1, 1000)
-    if gcd(first, second) == 1:
-        counter += 1
-prob = counter / n
-print(prob)
-pi = math.sqrt(6 / prob)
-print(pi)
+con = cx_Oracle.connect("admin", "Temporary1234", "db202004242112_high")
+print(con.version)
+cur = con.cursor()
+statement = 'select * from CUSTOMERS'
+cur.execute(statement)
+res = cur.fetchall()
+print(res)
+con.close()

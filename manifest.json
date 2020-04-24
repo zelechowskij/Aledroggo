@@ -1,6 +1,0 @@
-{
-  "runtime": {
-    "majorVersion": "3.6.0"
-  },
-  "command": "sh ./start.sh"
-}

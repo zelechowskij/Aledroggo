@@ -1,7 +1,6 @@
 import requests
 import Auth
 from pprint import pprint
-import csv
 
 
 # TO DO:
@@ -28,8 +27,8 @@ def filter_search(session, params, search_url):
     response = session.get(search_url, params=params)
     data = response.json()
 
-    filter_temp = ''
-    temp_dict = []
+    filter_temp = '?'
+
     for filter_dict in data['filters']:
         print(filter_dict)
         print(filter_dict['name'])
@@ -37,6 +36,7 @@ def filter_search(session, params, search_url):
 
             # POGMATWANE TO MAX WEŹ TO NAPRAW!
             temp_iter = 1
+            temp_dict = []
             for value in filter_dict['values']:
                 print(str(list(value.values())[1]) + ' ' + str(list(value.values())[0]) + ' ' + str(temp_iter))
                 # temp_dict.append(dict(value = str(list(value.values())[1]), name = str(list(value.values())[0])))
@@ -53,21 +53,20 @@ def filter_search(session, params, search_url):
                 for index in choice:
                     temp_dict.append(filter_dict['values'][int(index) - 1])
                 print(temp_dict)
-        filter_temp = '?'
-        # boolean flag!
-        first = True
-        for value in temp_dict:
-            if first:
-                filter_temp = filter_temp + filter_dict['id'] + '=' + value['value']
 
-            else:
-                filter_temp = filter_temp + '&' + filter_dict['id'] + '=' + value['value']
-            first = False
-        print(filter_temp)
-    print(filter_temp)
+            print(temp_dict)
+
+            for value in temp_dict:
+
+                params[str(filter_dict['id'])] = str(value['value'])
+            print(params)
+    print(params)
 
 
 def search_start():
+    # Main function, will determine set of products, that interest user
+    # it will return params dictionary, which contains search phrase, leaf category id and set of filters
+    # with params set we can query allegro multiple times every period of time, and get relatively constant results
     DEFAULT_SEARCH_URL = Auth.DEFAULT_API_URL + "/offers/listing"
 
     headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",

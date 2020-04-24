@@ -1,3 +1,5 @@
-class DefaultSettings():
-    def __init__(self):
-        self._
+DEFAULT_OAUTH_URL = 'https://allegro.pl/auth/oauth'
+DEFAULT_REDIRECT_URI = 'http://localhost:8000'
+DEFAULT_CLIENT_ID = "1c9ecb33f4374284bf16ef6f48e8891a"
+DEFAULT_CLIENT_SECRET = "7HM1XgQYhiopMIZ9XGVbhjXfZmdxSuXCrQzgBE7IdSYplEx9PDQf2Q71l9L8m0aM"
+DEFAULT_API_URL = "https://api.allegro.pl"
