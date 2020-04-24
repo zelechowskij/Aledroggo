@@ -3,6 +3,10 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import webbrowser
 import json
 
+# TO DO:
+# Delete default client id and client secret in get_access_code()
+# PCKE
+
 DEFAULT_OAUTH_URL = 'https://allegro.pl/auth/oauth'
 DEFAULT_REDIRECT_URI = 'http://localhost:8000'
 DEFAULT_CLIENT_ID = "1c9ecb33f4374284bf16ef6f48e8891a"
@@ -13,6 +17,7 @@ DEFAULT_API_URL = "https://api.allegro.pl"
 # Implementing function to authorize app and obtain access_code
 def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SECRET, redirect_uri=DEFAULT_REDIRECT_URI,
                     oauth_url=DEFAULT_OAUTH_URL):
+    # default class loader
     auth_url = '{}/authorize' \
                '?response_type=code' \
                '&client_id={}' \
@@ -57,7 +62,7 @@ def get_access_code(client_id=DEFAULT_CLIENT_ID, client_secret=DEFAULT_CLIENT_SE
 
     return _access_code
 
-
+# default class loader
 def sign_in(client_id, client_secret, access_code, redirect_uri='http://localhost:8000', oauth_url=DEFAULT_OAUTH_URL):
     token_url = oauth_url + "/token"
 
@@ -71,8 +76,7 @@ def sign_in(client_id, client_secret, access_code, redirect_uri='http://localhos
     return response.json()
 
 
-# TO DO:
-# Delete default client id and client secret in get_access_code()
+
 
 access_code = get_access_code()
 token = sign_in(DEFAULT_CLIENT_ID, DEFAULT_CLIENT_SECRET, access_code)
