@@ -1,2 +1,2 @@
 cx_Oracle==6.0b1 
-flask==0.12.1 
+flask==1.0 
