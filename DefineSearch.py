@@ -27,10 +27,10 @@ def filter_search(session, params, search_url):
     response = session.get(search_url, params=params)
     data = response.json()
 
-    filter_temp = '?'
+
 
     for filter_dict in data['filters']:
-        print(filter_dict)
+
         print(filter_dict['name'])
         if filter_dict['type'] == 'MULTI':
 
@@ -52,14 +52,14 @@ def filter_search(session, params, search_url):
                 choice = choice.split(',')
                 for index in choice:
                     temp_dict.append(filter_dict['values'][int(index) - 1])
-                print(temp_dict)
 
-            print(temp_dict)
+
+
 
             for value in temp_dict:
 
                 params[str(filter_dict['id'])] = str(value['value'])
-            print(params)
+
     print(params)
 
 
