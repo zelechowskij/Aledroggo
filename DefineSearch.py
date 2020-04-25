@@ -1,6 +1,7 @@
 import requests
 import Auth
 from pprint import pprint
+import DefaultSettings
 
 
 # TO DO:
@@ -57,7 +58,7 @@ def multi_choice(filter_dict, params, ):
         # POGMATWANE TO MAX WEŹ TO NAPRAW!
         temp_iter += 1
 
-    # input needs to expect user to not specify some filters, e.g. delivery methods
+    # input needs to expect user not to specify some filters, e.g. delivery methods
     choice = input()
     if choice == 'none':
         print('none')
@@ -90,8 +91,6 @@ def single_choice(filter_dict, params):
         params[prefix] = temp['value']
 
 
-
-
 def text_choice(filter_dict, params):
     prefix = str(filter_dict['id'])
     choice = input()
@@ -102,25 +101,25 @@ def text_choice(filter_dict, params):
 
 
 def numeric_choice(filter_dict, params):
-
     prefix = str(filter_dict['id'])
     for value in filter_dict['values']:
         print(value['name'])
         choice = input()
         if choice != 'none':
-            params[prefix+value['idSuffix']] = choice
-
+            params[prefix + value['idSuffix']] = choice
 
 
 def search_start():
     # Main function, will determine set of products, that interest user
     # it will return params dictionary, which contains search phrase, leaf category id and set of filters
-    # with params set we can query allegro multiple times every period of time, and get relatively constant results
+    # with params set we can query allegro multiple times every period of time, and get constant results
+    # taking into account new items, added after defining search!
+    access_token = Auth.get_access_token()
     DEFAULT_SEARCH_URL = Auth.DEFAULT_API_URL + "/offers/listing"
 
     headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
                "Accept": 'application/vnd.allegro.public.v1+json',
-               "Authorization": "Bearer {}".format(Auth.access_token)}
+               "Authorization": "Bearer {}".format(access_token)}
     phrase = "xiaomi redmi note 8 pro"
     category = "300525"
     params = {"phrase": phrase, 'category.id': category}
@@ -133,8 +132,10 @@ def search_start():
         # when displaying filters add count parameter
         # important to distinct filter type e.g. multi or text!
         # filter and category selection will be different in final product, dont bother
+
         filter_search(session, params, DEFAULT_SEARCH_URL)
 
+    return params
 
 
 search_start()
