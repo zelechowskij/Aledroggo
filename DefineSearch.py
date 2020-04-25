@@ -15,6 +15,7 @@ def category_search(session, params, search_url):
     while len(data['categories']['subcategories']) != 1:
         response = session.get(search_url, params=params)
         data = response.json()
+        print(data)
 
         for categorie in data["categories"]["subcategories"]:
             pprint(categorie["name"] + ' ' + categorie["id"])
@@ -138,4 +139,3 @@ def search_start():
     return params
 
 
-search_start()
