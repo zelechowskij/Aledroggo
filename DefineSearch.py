@@ -32,6 +32,7 @@ def filter_search(session, params, search_url):
         print(filter_dict)
         print(filter_dict['type'])
         print(filter_dict['name'])
+
         if filter_dict['type'] == 'MULTI':
             multi_choice(filter_dict, params)
 
@@ -40,6 +41,9 @@ def filter_search(session, params, search_url):
 
         if filter_dict['type'] == 'NUMERIC':
             numeric_choice(filter_dict, params)
+
+        if filter_dict['type'] == 'SINGLE':
+            single_choice(filter_dict, params)
 
     print(params)
 
@@ -50,7 +54,6 @@ def multi_choice(filter_dict, params, ):
     temp_dict = []
     for value in filter_dict['values']:
         print(str(list(value.values())[1]) + ' ' + str(list(value.values())[0]) + ' ' + str(temp_iter))
-        # temp_dict.append(dict(value = str(list(value.values())[1]), name = str(list(value.values())[0])))
         # POGMATWANE TO MAX WEŹ TO NAPRAW!
         temp_iter += 1
 
@@ -65,6 +68,28 @@ def multi_choice(filter_dict, params, ):
     prefix = str(filter_dict['id'])
     for value in temp_dict:
         params[prefix] = str(value['value'])
+
+
+def single_choice(filter_dict, params):
+    # POGMATWANE TO MAX WEŹ TO NAPRAW!
+    temp_iter = 1
+
+    for value in filter_dict['values']:
+        print(str(list(value.values())[1]) + ' ' + str(list(value.values())[0]) + ' ' + str(temp_iter))
+
+        # POGMATWANE TO MAX WEŹ TO NAPRAW!
+        temp_iter += 1
+
+    # input needs to expect user not to specify some filters, e.g. delivery methods
+    choice = input()
+    if choice == 'none':
+        print('none')
+    else:
+        prefix = str(filter_dict['id'])
+        temp = filter_dict['values'][int(choice) - 1]
+        params[prefix] = temp['value']
+
+
 
 
 def text_choice(filter_dict, params):
@@ -98,7 +123,6 @@ def search_start():
                "Authorization": "Bearer {}".format(Auth.access_token)}
     phrase = "xiaomi redmi note 8 pro"
     category = "300525"
-    filter_temp = ''
     params = {"phrase": phrase, 'category.id': category}
 
     with requests.Session() as session:
@@ -111,9 +135,6 @@ def search_start():
         # filter and category selection will be different in final product, dont bother
         filter_search(session, params, DEFAULT_SEARCH_URL)
 
-        # POGMATWANE TO MAX WEŹ TO NAPRAW!
-        # choice = input()
-        # choice = choice.split(',')
 
 
 search_start()
