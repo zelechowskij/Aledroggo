@@ -27,40 +27,64 @@ def filter_search(session, params, search_url):
     response = session.get(search_url, params=params)
     data = response.json()
 
-
-
+    print(data['filters'])
     for filter_dict in data['filters']:
-
+        print(filter_dict)
+        print(filter_dict['type'])
         print(filter_dict['name'])
         if filter_dict['type'] == 'MULTI':
+            multi_choice(filter_dict, params)
 
-            # POGMATWANE TO MAX WEŹ TO NAPRAW!
-            temp_iter = 1
-            temp_dict = []
-            for value in filter_dict['values']:
-                print(str(list(value.values())[1]) + ' ' + str(list(value.values())[0]) + ' ' + str(temp_iter))
-                # temp_dict.append(dict(value = str(list(value.values())[1]), name = str(list(value.values())[0])))
-                # POGMATWANE TO MAX WEŹ TO NAPRAW!
-                temp_iter += 1
+        if filter_dict['type'] == 'TEXT':
+            text_choice(filter_dict, params)
 
-            # input needs to expect user to not specify some filters, e.g. delivery methods
-            choice = input()
-            if choice == 'none':
-                print('none')
-                continue
-            else:
-                choice = choice.split(',')
-                for index in choice:
-                    temp_dict.append(filter_dict['values'][int(index) - 1])
-
-
-
-
-            for value in temp_dict:
-
-                params[str(filter_dict['id'])] = str(value['value'])
+        if filter_dict['type'] == 'NUMERIC':
+            numeric_choice(filter_dict, params)
 
     print(params)
+
+
+def multi_choice(filter_dict, params, ):
+    # POGMATWANE TO MAX WEŹ TO NAPRAW!
+    temp_iter = 1
+    temp_dict = []
+    for value in filter_dict['values']:
+        print(str(list(value.values())[1]) + ' ' + str(list(value.values())[0]) + ' ' + str(temp_iter))
+        # temp_dict.append(dict(value = str(list(value.values())[1]), name = str(list(value.values())[0])))
+        # POGMATWANE TO MAX WEŹ TO NAPRAW!
+        temp_iter += 1
+
+    # input needs to expect user to not specify some filters, e.g. delivery methods
+    choice = input()
+    if choice == 'none':
+        print('none')
+    else:
+        choice = choice.split(',')
+        for index in choice:
+            temp_dict.append(filter_dict['values'][int(index) - 1])
+    prefix = str(filter_dict['id'])
+    for value in temp_dict:
+        params[prefix] = str(value['value'])
+
+
+def text_choice(filter_dict, params):
+    prefix = str(filter_dict['id'])
+    choice = input()
+    if choice == 'none':
+        print('none')
+    else:
+        params[prefix] = str(choice)
+
+
+def numeric_choice(filter_dict, params):
+
+    prefix = str(filter_dict['id'])
+    for value in filter_dict['values']:
+        print(value['name'])
+        choice = input()
+        if choice != 'none':
+            params[prefix+value['idSuffix']] = choice
+
 
 
 def search_start():
