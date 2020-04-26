@@ -50,13 +50,13 @@ def filter_search(session, params, search_url):
     print(params)
 
 
-def multi_choice(filter_dict, params, ):
-    # POGMATWANE TO MAX WEŹ TO NAPRAW!
+def multi_choice(filter_dict, params):
+
     temp_iter = 1
     temp_dict = []
     for value in filter_dict['values']:
         print(str(list(value.values())[1]) + ' ' + str(list(value.values())[0]) + ' ' + str(temp_iter))
-        # POGMATWANE TO MAX WEŹ TO NAPRAW!
+
         temp_iter += 1
 
     # input needs to expect user not to specify some filters, e.g. delivery methods
@@ -73,13 +73,13 @@ def multi_choice(filter_dict, params, ):
 
 
 def single_choice(filter_dict, params):
-    # POGMATWANE TO MAX WEŹ TO NAPRAW!
+
     temp_iter = 1
 
     for value in filter_dict['values']:
         print(str(list(value.values())[1]) + ' ' + str(list(value.values())[0]) + ' ' + str(temp_iter))
 
-        # POGMATWANE TO MAX WEŹ TO NAPRAW!
+
         temp_iter += 1
 
     # input needs to expect user not to specify some filters, e.g. delivery methods
