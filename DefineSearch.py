@@ -111,6 +111,11 @@ def numeric_choice(filter_dict, params):
             params[prefix + value['idSuffix']] = choice
 
 
+def initiate_search():
+    print('podaj nazwe przedmiotu którego szukasz')
+    phrase = input()
+
+
 def finalize_search(params):
     print('podaj mail')
     email = input()
@@ -127,14 +132,18 @@ def search_start():
     # with params set we can query allegro multiple times every period of time, and get constant results
     # taking into account new items, added after defining search!
     access_token = Auth.get_access_token()
-    DEFAULT_SEARCH_URL = Auth.DEFAULT_SEARCH_URL
+    DEFAULT_SEARCH_URL = DefaultSettings.DEFAULT_SEARCH_URL
 
     headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
                "Accept": 'application/vnd.allegro.public.v1+json',
                "Authorization": "Bearer {}".format(access_token)}
-    phrase = "xiaomi redmi note 8 pro"
-    category = "300525"
-    params = {"phrase": phrase, 'category.id': category}
+    print('podaj nazwe przedmiotu którego szukasz')
+    phrase = input()
+    params = {'phrase': phrase}
+
+    # phrase = "xiaomi redmi note 8 pro"
+    # category = "300525"
+    # params = {"phrase": phrase, 'category.id': category}
 
     with requests.Session() as session:
         session.headers.update(headers)
@@ -148,10 +157,7 @@ def search_start():
         filter_search(session, params, DEFAULT_SEARCH_URL)
 
         search_params_list = finalize_search(params)
-        print(search_params_list)
 
-        DbConnectionHandler.update_search_table(search_params_list)
-
-    return params
+    return search_params_list
 
 

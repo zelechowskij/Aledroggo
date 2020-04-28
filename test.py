@@ -5,26 +5,18 @@ import DefaultSettings
 import pprint
 import json
 import DbConnectionHandler
+import cx_Oracle
 
+search_list = DefineSearch.search_start()
+print(search_list)
+DbConnectionHandler.update_search_table(search_list)
 
-def test():
-    DEFAULT_SEARCH_URL = Auth.DEFAULT_API_URL + "/offers/listing"
-    print('0')
-    token = Auth.get_access_token()
-    print(token)
-    headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
-               "Accept": 'application/vnd.allegro.public.v1+json',
-               "Authorization": "Bearer {}".format(token)}
-    phrase = "xiaomi redmi note 8 pro"
-    category = "300525"
+con = cx_Oracle.connect("ALLEGRO_OWNER", "Password_001", "db202004242112_high")
+print(con.version)
+cur = con.cursor()
+statement = 'select SEARCH_STRING from ALLEGRO_OWNER.SEARCH '
+cur.execute(statement)
+for row in cur:
+    print(row[0].read())
 
-    params = {'phrase': phrase, 'category.id': category, 'parameter.11323': '11323_1',
-              'sellingMode.format': 'BUY_NOW', 'price.to': '1200', 'shippingFromPoland': '1', 'sort': 'price','limit': '100'}
-    print(params)
-
-    search_string = DefineSearch.finalize_search(params)
-    DbConnectionHandler.update_search_table(search_string)
-
-
-test()
-
+con.close()

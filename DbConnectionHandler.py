@@ -1,18 +1,13 @@
 import DefaultSettings
 import cx_Oracle
 
-username = DefaultSettings.DEFAULT_ALLEGRO_OWNER_USERNAME
-password = DefaultSettings.DEFAULT_ALLEGRO_OWNER_PASSWORD
-connType = DefaultSettings.DEFAULT_DB_CONNECTION_TYPE_HIGH
-
-def make_connection(username, password, connType):
-    con = cx_Oracle.connect(username, password, connType)
-    return con
-
 
 def update_search_table(search_params_list):
-    connection = make_connection(username, password, connType)
+    connection = cx_Oracle.connect(DefaultSettings.DEFAULT_ALLEGRO_OWNER_USERNAME,
+                                   DefaultSettings.DEFAULT_ALLEGRO_OWNER_PASSWORD,
+                                   DefaultSettings.DEFAULT_ALLEGRO_OWNER_PASSWORD)
     cursor = connection.cursor()
+
     params = search_params_list[0]
     email = search_params_list[1]
     status = 'Active'
