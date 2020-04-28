@@ -2,6 +2,7 @@ import requests
 import Auth
 from pprint import pprint
 import DefaultSettings
+import DbConnectionHandler
 
 
 # TO DO:
@@ -110,13 +111,23 @@ def numeric_choice(filter_dict, params):
             params[prefix + value['idSuffix']] = choice
 
 
+def finalize_search(params):
+    print('podaj mail')
+    email = input()
+    print('podaj próg cenowy')
+    price_treshold = input()
+    params['price_threshold'] = price_treshold
+    search_string = [params, email]
+    return search_string
+
+
 def search_start():
     # Main function, will determine set of products, that interest user
     # it will return params dictionary, which contains search phrase, leaf category id and set of filters
     # with params set we can query allegro multiple times every period of time, and get constant results
     # taking into account new items, added after defining search!
     access_token = Auth.get_access_token()
-    DEFAULT_SEARCH_URL = Auth.DEFAULT_API_URL + "/offers/listing"
+    DEFAULT_SEARCH_URL = Auth.DEFAULT_SEARCH_URL
 
     headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
                "Accept": 'application/vnd.allegro.public.v1+json',
@@ -135,6 +146,11 @@ def search_start():
         # filter and category selection will be different in final product, dont bother
 
         filter_search(session, params, DEFAULT_SEARCH_URL)
+
+        search_params_list = finalize_search(params)
+        print(search_params_list)
+
+        DbConnectionHandler.update_search_table(search_params_list)
 
     return params
 
