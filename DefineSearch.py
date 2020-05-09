@@ -12,10 +12,11 @@ import DbConnectionHandler
 
 
 def category_search(session, params, search_url):
-    data = {'categories': {'subcategories': [{'id': 'temp'}, {'id': 'temp2'}]}}
+    # data = {'categories': {'subcategories': [{'id': 'temp'}, {'id': 'temp2'}]}}
+
+    response = session.get(search_url, params=params)
+    data = response.json()
     while len(data['categories']['subcategories']) != 1:
-        response = session.get(search_url, params=params)
-        data = response.json()
         print(data['categories']['subcategories'])
 
         for categorie in data["categories"]["subcategories"]:
@@ -23,6 +24,8 @@ def category_search(session, params, search_url):
 
         temp_category = input()
         params["category.id"] = temp_category
+        response = session.get(search_url, params=params)
+        data = response.json()
 
 
 def filter_search(session, params, search_url):
@@ -121,6 +124,7 @@ def finalize_search(params):
     email = input()
     print('podaj próg cenowy')
     price_treshold = input()
+    params['sort'] = '+price'
     params['limit'] = 100
     params['price_threshold'] = price_treshold
     search_string = [params, email]
