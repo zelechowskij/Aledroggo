@@ -16,7 +16,7 @@ def category_search(session, params, search_url):
     while len(data['categories']['subcategories']) != 1:
         response = session.get(search_url, params=params)
         data = response.json()
-        print(data)
+        print(data['categories']['subcategories'])
 
         for categorie in data["categories"]["subcategories"]:
             pprint(categorie["name"] + ' ' + categorie["id"])
@@ -121,6 +121,7 @@ def finalize_search(params):
     email = input()
     print('podaj próg cenowy')
     price_treshold = input()
+    params['limit'] = 100
     params['price_threshold'] = price_treshold
     search_string = [params, email]
     return search_string
