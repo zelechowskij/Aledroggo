@@ -5,7 +5,6 @@ from pprint import pprint
 import DefaultSettings
 import DbConnectionHandler
 
-print('żłńś')
 
 # TO DO:
 # mistake handling

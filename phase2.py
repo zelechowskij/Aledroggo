@@ -11,13 +11,12 @@ def price_check(data, price_threshold, email):
 
     best_deal = data[0]
     for item in data:
-        print(item)
-        print(best_deal)
+
 
         if float(item['amount']) < float(best_deal['amount']):
-            print('znalazlem nowy best dil')
+
             best_deal = item
-            print(best_deal)
+
 
     if best_deal['amount'] <= price_threshold:
         mail.send_mail(best_deal, email, price_threshold)
