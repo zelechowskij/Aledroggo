@@ -11,11 +11,11 @@ def update_search_table(search_params_list):
     params = search_params_list[0]
     email = search_params_list[1]
     status = 'Active'
-
+    params = str(params)
     statement = 'INSERT INTO ALLEGRO_OWNER.SEARCH(SETID, SEARCH_STRING, EMAIL, STATUS, UPLOADED)' \
                 ' SELECT ALLEGRO_OWNER.SEARCH_SQ.NEXTVAL, :params, :email, :status, SYSDATE FROM DUAL'
 
-    cursor.execute(statement, params = str(params), email = email, status = status)
+    cursor.execute(statement, params = params, email = email, status = status)
 
     connection.commit()
     connection.close()
@@ -28,9 +28,9 @@ def get_active_tasks():
 
     cursor = connection.cursor()
     status = 'Active'
-    statement = 'SELECT SETID, SEARCH_STRING, EMAIL FROM ALLEGRO_OWNER.SEARCH WHERE STATUS = :status'
-
-    cursor.execute(statement,status = status)
+    statement = 'SELECT SETID, SEARCH_STRING, EMAIL FROM ALLEGRO_OWNER.SEARCH WHERE STATUS = :status AND SETID = :setid'
+    setid = 46
+    cursor.execute(statement, status = status, setid = setid)
 
     active_tasks_list = []
 

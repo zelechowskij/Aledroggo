@@ -4,6 +4,26 @@ import Auth
 import DefaultSettings
 import requests
 import math
+import mail
+
+
+def price_check(data, price_threshold, email):
+
+    best_deal = data[0]
+    for item in data:
+        print(item)
+        print(best_deal)
+
+        if float(item['amount']) < float(best_deal['amount']):
+            print('znalazlem nowy best dil')
+            best_deal = item
+            print(best_deal)
+
+    if best_deal['amount'] <= price_threshold:
+        mail.send_mail(best_deal, email, price_threshold)
+
+    print('ostatecznie najlepsza oferta:')
+    print(best_deal)
 
 
 def data_harvest(data, list):
@@ -42,6 +62,7 @@ with requests.Session() as session:
         data_list = []
         data_harvest(data['items'], data_list)
         iterations = math.ceil(data['searchMeta']['availableCount']/100)
+        print(params)
         for i in range(1, iterations + 1):
             offset = 100 * i
             params['offset'] = offset
@@ -49,5 +70,6 @@ with requests.Session() as session:
             data = response.json()
             data_harvest(data['items'], data_list)
 
+        price_check(data_list, price_threshold, email)
         print(data_list)
-        print(len(data_list))
+

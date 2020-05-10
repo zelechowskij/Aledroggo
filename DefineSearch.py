@@ -1,9 +1,11 @@
+#-*- coding: utf-8 -*-
 import requests
 import Auth
 from pprint import pprint
 import DefaultSettings
 import DbConnectionHandler
 
+print('żłńś')
 
 # TO DO:
 # mistake handling
@@ -144,6 +146,9 @@ def search_start():
                "Authorization": "Bearer {}".format(access_token)}
     print('podaj nazwe przedmiotu którego szukasz')
     phrase = input()
+    print(phrase)
+    phrase.encode('UTF-8')
+    print(phrase)
     params = {'phrase': phrase}
 
     # phrase = "xiaomi redmi note 8 pro"
