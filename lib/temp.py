@@ -7,6 +7,6 @@ cur = con.cursor()
 statement = 'select * from ALLEGRO_OWNER.SEARCH '
 cur.execute(statement)
 for row in cur:
-    print(row[0].read())
+    print(row)
 
 con.close()

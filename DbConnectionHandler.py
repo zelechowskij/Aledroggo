@@ -2,10 +2,25 @@ import DefaultSettings
 import cx_Oracle
 
 
+def establish_db_connection(user):
+
+    if user == 'owner':
+        username = DefaultSettings.DEFAULT_ALLEGRO_OWNER_USERNAME
+        password = DefaultSettings.DEFAULT_ALLEGRO_OWNER_PASSWORD
+        type = DefaultSettings.DEFAULT_DB_CONNECTION_TYPE_HIGH
+
+    if user == 'user':
+        username = DefaultSettings.DEFAULT_ALLEGRO_USER_USERNAME
+        password = DefaultSettings.DEFAULT_ALLEGRO_USER_PASSWORD
+        type = DefaultSettings.DEFAULT_DB_CONNECTION_TYPE_HIGH
+
+    connection = cx_Oracle.connect(username, password, type)
+
+    return connection
+
+
 def update_search_table(search_params_list):
-    connection = cx_Oracle.connect(DefaultSettings.DEFAULT_ALLEGRO_OWNER_USERNAME,
-                                   DefaultSettings.DEFAULT_ALLEGRO_OWNER_PASSWORD,
-                                   DefaultSettings.DEFAULT_DB_CONNECTION_TYPE_HIGH)
+    connection = establish_db_connection('owner')
     cursor = connection.cursor()
 
     params = search_params_list[0]
@@ -22,15 +37,14 @@ def update_search_table(search_params_list):
 
 
 def get_active_tasks():
-    connection = cx_Oracle.connect(DefaultSettings.DEFAULT_ALLEGRO_USER_USERNAME,
-                                   DefaultSettings.DEFAULT_ALLEGRO_USER_PASSWORD,
-                                   DefaultSettings.DEFAULT_DB_CONNECTION_TYPE_HIGH)
+    connection = establish_db_connection('user')
 
     cursor = connection.cursor()
+
     status = 'Active'
-    statement = 'SELECT SETID, SEARCH_STRING, EMAIL FROM ALLEGRO_OWNER.SEARCH WHERE STATUS = :status AND SETID = :setid'
-    setid = 46
-    cursor.execute(statement, status = status, setid = setid)
+    statement = 'SELECT SETID, SEARCH_STRING, EMAIL FROM ALLEGRO_OWNER.SEARCH WHERE STATUS = :status'
+
+    cursor.execute(statement, status = status)
 
     active_tasks_list = []
 
@@ -39,11 +53,11 @@ def get_active_tasks():
 
         active_tasks_list.append(temp_list)
 
-
-
     connection.close()
 
     return active_tasks_list
 
 
-get_active_tasks()
+def update_data_table(item_list, setid):
+    connection = establish_db_connection('owner')
+    pass

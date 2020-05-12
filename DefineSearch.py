@@ -17,6 +17,7 @@ def category_search(session, params, search_url):
 
     response = session.get(search_url, params=params)
     data = response.json()
+    print(data)
     while len(data['categories']['subcategories']) != 1:
         print(data['categories']['subcategories'])
 
@@ -33,7 +34,7 @@ def filter_search(session, params, search_url):
     # get data with previously established category id and phrase
     response = session.get(search_url, params=params)
     data = response.json()
-
+    print(data['searchMeta'])
     print(data['filters'])
     for filter_dict in data['filters']:
         print(filter_dict)
@@ -51,7 +52,7 @@ def filter_search(session, params, search_url):
 
         if filter_dict['type'] == 'SINGLE':
             single_choice(filter_dict, params)
-
+        print(params)
     print(params)
 
 
@@ -68,14 +69,23 @@ def multi_choice(filter_dict, params):
     choice = input()
     if choice == 'none':
         print('none')
-    else:
+    elif len(choice) > 1:
         choice = choice.split(',')
+        print(choice)
+        # TODO: fix the loops
         for index in choice:
+            print(index)
             temp_dict.append(filter_dict['values'][int(index) - 1])
-    prefix = str(filter_dict['id'])
-    for value in temp_dict:
-        params[prefix] = str(value['value'])
+        print(temp_dict)
+        prefix = str(filter_dict['id'])
+        multi_list = []
+        for value in temp_dict:
+            multi_list.append(str(value['value']))
 
+        params[prefix] = multi_list
+    elif len(choice) == 1:
+        prefix = str(filter_dict['id'])
+        params[prefix] = str(filter_dict['values'][int(choice) - 1]['value'])
 
 def single_choice(filter_dict, params):
 
@@ -137,17 +147,14 @@ def search_start():
     # it will return params dictionary, which contains search phrase, leaf category id and set of filters
     # with params set we can query allegro multiple times every period of time, and get constant results
     # taking into account new items, added after defining search!
-    access_token = Auth.get_access_token()
     DEFAULT_SEARCH_URL = DefaultSettings.DEFAULT_SEARCH_URL
 
-    headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
-               "Accept": 'application/vnd.allegro.public.v1+json',
-               "Authorization": "Bearer {}".format(access_token)}
+    headers = Auth.load_default_headers()
     print('podaj nazwe przedmiotu którego szukasz')
     phrase = input()
-    print(phrase)
-    phrase.encode('UTF-8')
-    print(phrase)
+
+    # TODO: polish symbols handling
+
     params = {'phrase': phrase}
 
     # phrase = "xiaomi redmi note 8 pro"
