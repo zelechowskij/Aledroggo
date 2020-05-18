@@ -14,7 +14,7 @@ def establish_db_connection(user):
         password = DefaultSettings.DEFAULT_ALLEGRO_USER_PASSWORD
         type = DefaultSettings.DEFAULT_DB_CONNECTION_TYPE_HIGH
 
-    connection = cx_Oracle.connect(username, password, type)
+    connection = cx_Oracle.connect(username, password, type, encoding = "UTF8")
 
     return connection
 
@@ -27,6 +27,7 @@ def update_search_table(search_params_list):
     email = search_params_list[1]
     status = 'Active'
     params = str(params)
+    print(type(params))
     statement = 'INSERT INTO ALLEGRO_OWNER.SEARCH(SETID, SEARCH_STRING, EMAIL, STATUS, UPLOADED)' \
                 ' SELECT ALLEGRO_OWNER.SEARCH_SQ.NEXTVAL, :params, :email, :status, SYSDATE FROM DUAL'
 
@@ -60,4 +61,17 @@ def get_active_tasks():
 
 def update_data_table(item_list, setid):
     connection = establish_db_connection('owner')
+    cursor = connection.cursor()
+    item_list = str(item_list)
+    dlist = item_list
+
+    # dlist = item_list.encode("utf-8")
+
+    statement = 'INSERT INTO ALLEGRO_OWNER.TEST(SETID, DATA_STRING, CHILD_ID, UPLOADED)' \
+                'VALUES (:setid, :dlist, ALLEGRO_OWNER.TEST_SQ.NEXTVAL, SYSDATE)'
+
+    cursor.execute(statement, setid = setid, dlist = dlist)
+
+    connection.commit()
+    connection.close()
     pass

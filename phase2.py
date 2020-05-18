@@ -10,6 +10,7 @@ import mail
 def price_check(data, price_threshold, email):
     print(data)
     best_deal = data[0]
+
     for item in data:
 
         if float(item['amount']) < float(best_deal['amount']):
@@ -36,6 +37,7 @@ def check_allegro():
     headers = Auth.load_default_headers()
 
     active_tasks_list = DbConnectionHandler.get_active_tasks()
+    print(active_tasks_list)
 
     with requests.Session() as session:
         session.headers.update(headers)

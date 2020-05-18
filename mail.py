@@ -6,7 +6,7 @@ port = 465  # For SSL
 smtp_server = "smtp.gmail.com"
 sender_email = "aledroggo@gmail.com"  # Enter your address
 receiver_email = "jarilio99@gmail.com"  # Enter receiver address
-password = 'Eskalopka1'
+
 
 def data_to_href(data):
     id = data['id']
