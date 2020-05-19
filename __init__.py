@@ -1,20 +1,16 @@
-import datetime
-
 from flask import Flask, render_template
-
+import DefineSearch
 app = Flask(__name__)
 
 
 @app.route('/')
-def root():
-    # For the sake of example, use static information to inflate the template.
-    # This will be replaced with real information in later steps.
-    dummy_times = [datetime.datetime(2018, 1, 1, 10, 0, 0),
-                   datetime.datetime(2018, 1, 2, 10, 30, 0),
-                   datetime.datetime(2018, 1, 3, 11, 0, 0),
-                   ]
+def homepage():
+    return render_template("main.html")
 
-    return render_template('index.html', times=dummy_times)
+@app.route('/search_start')
+def searchstart():
+
+    return render_template("search_start.html")
 
 
 if __name__ == '__main__':
@@ -25,4 +21,4 @@ if __name__ == '__main__':
     # the "static" directory. See:
     # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
     # App Engine itself will serve those files as configured in app.yaml.
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)
