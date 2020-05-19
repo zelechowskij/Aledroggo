@@ -1,5 +1,5 @@
-from flask import Flask, render_template
-import DefineSearch
+from flask import Flask, render_template, request, jsonify
+import define_search
 app = Flask(__name__)
 
 
@@ -7,10 +7,22 @@ app = Flask(__name__)
 def homepage():
     return render_template("main.html")
 
-@app.route('/search_start')
-def searchstart():
 
+@app.route('/search_start', methods = ['POST', "GET"])
+def searchstart():
+    # if request.method == "POST":
+    #     phrase = request.form["phrase"]
+    #     return render_template("search_start.html")
+    # else:
+    #     return render_template("search_start.html")
     return render_template("search_start.html")
+
+
+@app.route('/phrase', methods = ['POST'])
+def phrase():
+    phrase = request.form['phrase']
+    define_search.search_start(phrase)
+    return jsonify({'result': 'success'})
 
 
 if __name__ == '__main__':
