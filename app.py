@@ -1,6 +1,6 @@
 import os
 import cx_Oracle
-from flask import Flask
+from testflask import Flask
 
 db_user = os.environ.get('DBAAS_USER_NAME', 'SYSTEM')
 db_password = os.environ.get('DBAAS_USER_PASSWORD', 'Welcome1_')
