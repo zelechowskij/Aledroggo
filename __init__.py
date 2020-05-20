@@ -4,8 +4,7 @@ import DefaultSettings
 import Auth
 import requests
 app = Flask(__name__)
-
-
+isFirst = True
 @app.route('/')
 def homepage():
     return render_template("main.html")
@@ -18,35 +17,42 @@ def searchstart():
     #     return render_template("search_start.html")
     # else:
     #     return render_template("search_start.html")
-    return render_template("search_start.html")
+    token = Auth.get_access_token()
+    return render_template("search_start.html", token = token)
 
 
 @app.route('/phrase', methods = ['POST'])
 def phrase():
 
     phrase = request.form['phrase']
+    if "token" in request.form:
+        access_token = request.form["token"]
+
     print(request.form)
     if "category.id" in request.form:
-        print("dupa")
+
         category = request.form['category.id']
         params = {'phrase': phrase, 'category.id': category}
 
     else:
         params = {'phrase': phrase}
+
     DEFAULT_SEARCH_URL = DefaultSettings.DEFAULT_SEARCH_URL
-
-    headers = Auth.load_default_headers()
-
-
+    headers = headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
+               "Accept": 'application/vnd.allegro.public.v1+json',
+               "Authorization": "Bearer {}".format(access_token)}
     with requests.Session() as session:
         session.headers.update(headers)
 
+        json =  define_search.search_categories(session, params, DEFAULT_SEARCH_URL, access_token)
 
-        json =  define_search.search_categories(session,params,DEFAULT_SEARCH_URL)
+    # TODO: else 0 subcat
 
-    print(json)
-    if json[]
-    return render_template("categorie.html", json = json)
+    if len(json['subcategories']) == 1:
+        return filters(json)
+
+    else:
+        return render_template("category.html", json = json)
 
     # with requests.Session() as session:
     #     session.headers.update(headers)
@@ -56,6 +62,24 @@ def phrase():
     #     data = response.json()
 
     return jsonify(phrase)
+
+
+@app.route('/filter', methods = ['POST'])
+def filters(json):
+    DEFAULT_SEARCH_URL = DefaultSettings.DEFAULT_SEARCH_URL
+    print(json)
+    print('jarekkkasdaskd')
+    print('jarek')
+    params = json['params']
+    access_token = json["access_token"]
+    headers =     headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
+               "Accept": 'application/vnd.allegro.public.v1+json',
+               "Authorization": "Bearer {}".format(json['access_token'])}
+    with requests.Session() as session:
+        session.headers.update(headers)
+        json = define_search.search_filter(session, params, DEFAULT_SEARCH_URL, access_token)
+        print(json)
+    return render_template("filter.html", json = json)
 
 
 if __name__ == '__main__':

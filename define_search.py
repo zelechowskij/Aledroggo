@@ -12,43 +12,29 @@ import DbConnectionHandler
 # going inside dictionary function - simple and transparent!
 # print for fetched data?
 
-def search_categories(session, params, search_url):
+def search_categories(session, params, search_url, token):
     response = session.get(search_url, params=params)
     data = response.json()
+    pprint(data)
     kategorie_json = []
+    print(data["categories"])
     kategorie_json = data["categories"]
+    kategorie_json["access_token"] = token
     kategorie_json["params"] = params
     print(params)
     return kategorie_json
 
 
-
-
-def category_search(session, params, search_url):
-
-
+def search_filter(session, params, search_url, token):
     response = session.get(search_url, params=params)
     data = response.json()
-    pprint(data)
-    categories = []
-    while len(data['categories']['subcategories']) != 1:
+    kategorie_json = {}
+    kategorie_json['filters'] = data["filters"]
+    kategorie_json["access_token"] = token
+    kategorie_json["params"] = params
+    return kategorie_json
 
-        for categorie in data["categories"]["subcategories"]:
-            kategorie = []
-            pprint(categorie["name"] + ' ' + categorie["id"])
-            kategorie.append(categorie["name"],categorie["id"] )
-
-        categories.append(kategorie)
-
-
-
-        temp_category = input()
-        params["category.id"] = temp_category
-        response = session.get(search_url, params=params)
-        data = response.json()
-
-
-def filter_search(session, params, search_url):
+def filter_search(session, params, search_url, token):
     # get data with previously established category id and phrase
     response = session.get(search_url, params=params)
     data = response.json()
