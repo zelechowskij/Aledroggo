@@ -12,17 +12,35 @@ import DbConnectionHandler
 # going inside dictionary function - simple and transparent!
 # print for fetched data?
 
+def search_categories(session, params, search_url):
+    response = session.get(search_url, params=params)
+    data = response.json()
+    kategorie_json = []
+    kategorie_json = data["categories"]
+    kategorie_json["params"] = params
+    print(params)
+    return kategorie_json
+
+
+
 
 def category_search(session, params, search_url):
-    # data = {'categories': {'subcategories': [{'id': 'temp'}, {'id': 'temp2'}]}}
+
 
     response = session.get(search_url, params=params)
     data = response.json()
-
+    pprint(data)
+    categories = []
     while len(data['categories']['subcategories']) != 1:
 
         for categorie in data["categories"]["subcategories"]:
+            kategorie = []
             pprint(categorie["name"] + ' ' + categorie["id"])
+            kategorie.append(categorie["name"],categorie["id"] )
+
+        categories.append(kategorie)
+
+
 
         temp_category = input()
         params["category.id"] = temp_category
@@ -153,16 +171,17 @@ def search_start(phrase):
     with requests.Session() as session:
         session.headers.update(headers)
 
-        category_search(session, params, DEFAULT_SEARCH_URL)
+        return session
+
 
         # when displaying filters add count parameter
         # important to distinct filter type e.g. multi or text!
         # filter and category selection will be different in final product, dont bother
 
-        filter_search(session, params, DEFAULT_SEARCH_URL)
-
-        search_params_list = finalize_search(params)
-
-    return search_params_list
+    #     filter_search(session, params, DEFAULT_SEARCH_URL)
+    #
+    #     search_params_list = finalize_search(params)
+    #
+    # return search_params_list
 
 

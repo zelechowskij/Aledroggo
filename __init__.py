@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request, jsonify
 import define_search
+import DefaultSettings
+import Auth
+import requests
 app = Flask(__name__)
 
 
@@ -20,9 +23,39 @@ def searchstart():
 
 @app.route('/phrase', methods = ['POST'])
 def phrase():
+
     phrase = request.form['phrase']
-    define_search.search_start(phrase)
-    return jsonify({'result': 'success'})
+    print(request.form)
+    if "category.id" in request.form:
+        print("dupa")
+        category = request.form['category.id']
+        params = {'phrase': phrase, 'category.id': category}
+
+    else:
+        params = {'phrase': phrase}
+    DEFAULT_SEARCH_URL = DefaultSettings.DEFAULT_SEARCH_URL
+
+    headers = Auth.load_default_headers()
+
+
+    with requests.Session() as session:
+        session.headers.update(headers)
+
+
+        json =  define_search.search_categories(session,params,DEFAULT_SEARCH_URL)
+
+    print(json)
+    if json[]
+    return render_template("categorie.html", json = json)
+
+    # with requests.Session() as session:
+    #     session.headers.update(headers)
+    #
+    #
+    #     response = session.get(DEFAULT_SEARCH_URL, params=params)
+    #     data = response.json()
+
+    return jsonify(phrase)
 
 
 if __name__ == '__main__':
