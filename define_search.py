@@ -15,13 +15,13 @@ import DbConnectionHandler
 def search_categories(session, params, search_url, token):
     response = session.get(search_url, params=params)
     data = response.json()
-    pprint(data)
+
     kategorie_json = []
-    print(data["categories"])
+
     kategorie_json = data["categories"]
     kategorie_json["access_token"] = token
     kategorie_json["params"] = params
-    print(params)
+
     return kategorie_json
 
 

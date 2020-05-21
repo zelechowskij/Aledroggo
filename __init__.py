@@ -23,7 +23,6 @@ def searchstart():
 
 @app.route('/phrase', methods = ['POST'])
 def phrase():
-
     phrase = request.form['phrase']
     if "token" in request.form:
         access_token = request.form["token"]
@@ -64,6 +63,14 @@ def phrase():
     return jsonify(phrase)
 
 
+@app.route('/email', methods = ['POST'])
+def email():
+    print(request.form)
+    print(request.form["parameter.11323"])
+    print('jajkowja')
+    return render_template("email.html")
+
+
 @app.route('/filter', methods = ['POST'])
 def filters(json):
     DEFAULT_SEARCH_URL = DefaultSettings.DEFAULT_SEARCH_URL
@@ -72,7 +79,7 @@ def filters(json):
     print('jarek')
     params = json['params']
     access_token = json["access_token"]
-    headers =     headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
+    headers =headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
                "Accept": 'application/vnd.allegro.public.v1+json',
                "Authorization": "Bearer {}".format(json['access_token'])}
     with requests.Session() as session:
@@ -81,6 +88,7 @@ def filters(json):
         print(json)
     return render_template("filter.html", json = json)
 
+# TODO: template inheritance e.g. navbar etc
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
