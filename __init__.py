@@ -66,17 +66,13 @@ def phrase():
 @app.route('/email', methods = ['POST'])
 def email():
     print(request.form)
-    print(request.form["parameter.11323"])
-    print('jajkowja')
     return render_template("email.html")
 
 
 @app.route('/filter', methods = ['POST'])
 def filters(json):
     DEFAULT_SEARCH_URL = DefaultSettings.DEFAULT_SEARCH_URL
-    print(json)
-    print('jarekkkasdaskd')
-    print('jarek')
+
     params = json['params']
     access_token = json["access_token"]
     headers =headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
@@ -85,7 +81,6 @@ def filters(json):
     with requests.Session() as session:
         session.headers.update(headers)
         json = define_search.search_filter(session, params, DEFAULT_SEARCH_URL, access_token)
-        print(json)
     return render_template("filter.html", json = json)
 
 # TODO: template inheritance e.g. navbar etc
