@@ -78,7 +78,7 @@
 <!--</html>-->
 przerwa
 
-<!DOCTYPE html>
+
 
 <html>
 <head>
@@ -86,24 +86,50 @@ przerwa
 </head>
 <body>
 
-<ol>
 <!-- For loop logic of jinja template -->
     <form action="/email" method="post">
 {%for filter in json["filters"]%}
-
+        {%if filter['type'] == 'MULTI'%}
           <label>{{filter['name']}}</label>
           <select name={{filter['id']}} multiple="multiple">
             {%for value in filter["values"]%}
               <option value={{value['value']}}>{{value['name']}}</option>
             {%endfor%}
           </select>
+        {%endif%}
+                {%if filter['type'] == 'SINGLE'%}
+        single
+          <label>{{filter['name']}}</label>
+          <select name={{filter['id']}} >
+            {%for value in filter["values"]%}
+              <option >{{value['name']}}</option>
+            {%endfor%}
+          </select>
+        {%endif%}
+
+        {%if filter['type'] == 'TEXT'%}
+          <label>{{filter['name']}}</label>
+            <input type="text" id={{filter['name']}} name={{filter['id']}} >
+
+        {%endif%}
+
+        {%if filter['type'] == 'NUMERIC'%}
+          <label>{{filter['name']}}</label>
+            {%for value in filter["values"]%}
+        <label for={{filter['name']}}>{{value['name']}}</label>
+            <input type="number" id={{filter['name']}} name={{filter['id'] + value['idSuffix']}} min="0">
+            {%endfor%}
+        {%endif%}
+
+
+
         {%endfor%}
         <input type = "hidden" value = '{{(json["params"])}}' name = "params" >
         <input type = "hidden" value = '{{(json["access_token"])}}' name = "token" >
         <input type = "submit" value = "submit">
     </form>
 
-</ol>
+
 
 </body>
 </html>

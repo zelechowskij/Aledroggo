@@ -3,6 +3,7 @@ import define_search
 import DefaultSettings
 import Auth
 import requests
+from pprint import pprint
 app = Flask(__name__)
 isFirst = True
 @app.route('/')
@@ -54,18 +55,6 @@ def phrase():
         return render_template("category.html", json = json)
 
 
-
-@app.route('/email', methods = ['POST'])
-def email():
-    params = request.form['params']
-    print(params)
-    for parameter in request.form:
-        print(parameter)
-
-    print(request.form)
-    return render_template("email.html")
-
-
 @app.route('/filter', methods = ['POST'])
 def filters(json):
     DEFAULT_SEARCH_URL = DefaultSettings.DEFAULT_SEARCH_URL
@@ -78,9 +67,27 @@ def filters(json):
     with requests.Session() as session:
         session.headers.update(headers)
         json = define_search.search_filter(session, params, DEFAULT_SEARCH_URL, access_token)
+
     return render_template("filter.html", json = json)
 
 # TODO: template inheritance e.g. navbar etc
+
+
+@app.route('/email', methods = ['POST'])
+def email():
+    params = request.form['params']
+    data = request.form
+    print(data)
+    list = data.values()
+    print(list)
+    print(type(data))
+    print(params)
+    for item in request.form:
+        print(item)
+
+    print(request.form)
+    return render_template("email.html")
+
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
