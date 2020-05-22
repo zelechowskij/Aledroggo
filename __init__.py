@@ -53,18 +53,15 @@ def phrase():
     else:
         return render_template("category.html", json = json)
 
-    # with requests.Session() as session:
-    #     session.headers.update(headers)
-    #
-    #
-    #     response = session.get(DEFAULT_SEARCH_URL, params=params)
-    #     data = response.json()
-
-    return jsonify(phrase)
 
 
 @app.route('/email', methods = ['POST'])
 def email():
+    params = request.form['params']
+    print(params)
+    for parameter in request.form:
+        print(parameter)
+
     print(request.form)
     return render_template("email.html")
 
