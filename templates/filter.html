@@ -102,14 +102,14 @@ przerwa
           <label>{{filter['name']}}</label>
           <select name={{filter['id']}} >
             {%for value in filter["values"]%}
-              <option >{{value['name']}}</option>
+              <option value = {{value['value']}} >{{value['name']}}</option>
             {%endfor%}
           </select>
         {%endif%}
 
         {%if filter['type'] == 'TEXT'%}
           <label>{{filter['name']}}</label>
-            <input type="text" id={{filter['name']}} name={{filter['id']}} >
+            <input type="text" id={{filter['name']}} name={{filter['id']}}>
 
         {%endif%}
 
