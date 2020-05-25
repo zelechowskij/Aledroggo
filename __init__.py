@@ -3,6 +3,7 @@ import define_search
 import DefaultSettings
 import Auth
 import requests
+import json
 from pprint import pprint
 app = Flask(__name__)
 isFirst = True
@@ -76,16 +77,25 @@ def filters(json):
 @app.route('/email', methods = ['POST'])
 def email():
     params = request.form['params']
-    data = request.form
-    print(data)
-    list = data.values()
-    print(list)
-    print(type(data))
-    print(params)
-    for item in request.form:
-        print(item)
+    params = params.replace("'", "\"")
+    params = json.loads(params)
+    print(type(params))
+    token = request.form['token']
+    data = request.form.copy()
+    data.pop('params')
+    data.pop('token')
+    for item in data:
+        # czy jest jakaś wartość dla klucza
+        if len(data[item]) != 0:
+            # czy nie ma wiecej niz jednej wartości dla danego klucza
+            if len(data.getlist(item)) > 1:
+                temp_list = data.getlist(item)
+                params[item] = temp_list
 
-    print(request.form)
+            else:
+                params[item] = data[item]
+
+    print(params)
     return render_template("email.html")
 
 
