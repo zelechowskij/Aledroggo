@@ -21,7 +21,7 @@ def search_categories(session, params, search_url, token):
     kategorie_json = data["categories"]
     kategorie_json["access_token"] = token
     kategorie_json["params"] = params
-
+    print(kategorie_json)
     return kategorie_json
 
 
@@ -32,6 +32,7 @@ def search_filter(session, params, search_url, token):
     kategorie_json['filters'] = data["filters"]
     kategorie_json["access_token"] = token
     kategorie_json["params"] = params
+    print(kategorie_json)
     return kategorie_json
 
 def filter_search(session, params, search_url, token):

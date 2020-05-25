@@ -4,7 +4,7 @@ import DefaultSettings
 import Auth
 import requests
 import json
-from pprint import pprint
+
 app = Flask(__name__)
 isFirst = True
 @app.route('/')
@@ -14,11 +14,7 @@ def homepage():
 
 @app.route('/search_start', methods = ['POST', "GET"])
 def searchstart():
-    # if request.method == "POST":
-    #     phrase = request.form["phrase"]
-    #     return render_template("search_start.html")
-    # else:
-    #     return render_template("search_start.html")
+
     token = Auth.get_access_token()
     return render_template("search_start.html", token = token)
 
@@ -79,7 +75,7 @@ def email():
     params = request.form['params']
     params = params.replace("'", "\"")
     params = json.loads(params)
-    print(type(params))
+
     token = request.form['token']
     data = request.form.copy()
     data.pop('params')
@@ -88,6 +84,9 @@ def email():
         # czy jest jakaś wartość dla klucza
         if len(data[item]) != 0:
             # czy nie ma wiecej niz jednej wartości dla danego klucza
+            if data[item] == "brak":
+                continue
+
             if len(data.getlist(item)) > 1:
                 temp_list = data.getlist(item)
                 params[item] = temp_list
@@ -95,8 +94,18 @@ def email():
             else:
                 params[item] = data[item]
 
-    print(params)
-    return render_template("email.html")
+    parametry = {}
+    parametry['params'] = params
+    print(parametry)
+    return render_template("email.html", params = parametry)
+
+@app.route('/final', methods = ['POST'])
+def final():
+    data = request.form.copy()
+    for item in data:
+        print(item)
+        print(data[item])
+    return render_template("final.html")
 
 
 if __name__ == '__main__':

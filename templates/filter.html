@@ -97,10 +97,11 @@ przerwa
             {%endfor%}
           </select>
         {%endif%}
-                {%if filter['type'] == 'SINGLE'%}
-        single
+
+        {%if filter['type'] == 'SINGLE'%}
           <label>{{filter['name']}}</label>
           <select name={{filter['id']}} >
+              <option value = "brak" selected>brak</option>
             {%for value in filter["values"]%}
               <option value = {{value['value']}} >{{value['name']}}</option>
             {%endfor%}

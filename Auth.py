@@ -87,7 +87,9 @@ def get_access_token():
 
 
 def load_default_headers():
-
+    access_code = get_access_code()
+    token = sign_in(DEFAULT_CLIENT_ID, DEFAULT_CLIENT_SECRET, access_code)
+    access_token = token["access_token"]
     headers = {"charset": "utf-8", "Accept-Language": "pl-PL", "Content-Type": "application/json",
                "Accept": 'application/vnd.allegro.public.v1+json',
                "Authorization": "Bearer {}".format(access_token)}

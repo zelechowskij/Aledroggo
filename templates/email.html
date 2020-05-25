@@ -42,18 +42,21 @@
 <body>
     <div id = "phraseJumbotron"  class="jumbotron jumbotron-fluid">
       <div class="container">
-        <h1 class="display-4">Podaj swój email oraz cene która cię interesuje</h1>
-        <p class="lead">Gdy znajdziemy aukcje w interesującej Ciebie cenie, powiadomimy cię wiadomością email</p>
+        <h1 class="display-4">Podaj swój email oraz cenę która cię interesuje</h1>
+        <p class="lead">Gdy znajdziemy aukcje która spełnia twoje oczekiwania powiadomimy Cię wiadomością email</p>
 
           <div class="input-group mb-3">
 
               </div>
-<form action="/phrase" method="post">
 
-  <label for="phrase">Last name:</label><br>
-  <input type="text" id="phrase" name="phrase" ><br><br>
-  <input type="submit" value="Submit">
-    <input type = "hidden" value = '{{(token)}}' name = "token" >
+<form action="/final" method="post">
+
+  <label for="email">email</label><br>
+  <input type="text" id="email" name="email" required><br><br>
+    <label for="cena">cena</label><br>
+    <input type="number" id="cena" name="price_threshold" min="0" required><br><br>
+    <input type ="hidden" value = '{{params["params"]}}' name = "parameters" >
+    <input type="submit" value="Submit">
 </form>
       </div>
 
