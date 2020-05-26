@@ -1,0 +1,28 @@
+
+<!DOCTYPE html> 
+  
+<html> 
+<head> 
+    <title>For loop in Flask</title> 
+</head> 
+<body> 
+  
+<ol> 
+<!-- For loop logic of jinja template -->
+    <form action="/phrase" method="post">
+{%for category in json["subcategories"]%}
+
+  <input type="radio" id = "kategorie" name="category.id" value={{category["id"]}}>
+  <label for="kategorie" >{{category["name"]}}</label><br>
+
+{%endfor%}
+          <input type = "hidden" value = '{{(json["params"]["phrase"])}}' name = "phrase" >
+        <input type = "hidden" value = '{{(json["access_token"])}}' name = "token" >
+   <input type = "submit" value = "submit">
+
+    </form>
+  
+</ol> 
+  
+</body> 
+</html> 
