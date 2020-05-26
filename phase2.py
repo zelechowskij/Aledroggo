@@ -8,7 +8,6 @@ import mail
 
 
 def price_check(data, price_threshold, email):
-    print(data)
     best_deal = data[0]
 
     for item in data:

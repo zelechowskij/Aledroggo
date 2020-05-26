@@ -4,6 +4,7 @@ import DefaultSettings
 import Auth
 import requests
 import json
+import DbConnectionHandler
 
 app = Flask(__name__)
 isFirst = True
@@ -102,9 +103,19 @@ def email():
 @app.route('/final', methods = ['POST'])
 def final():
     data = request.form.copy()
+    parameters = data['parameters']
+    parameters = parameters.replace("'", "\"")
     for item in data:
         print(item)
         print(data[item])
+    email = data['email']
+    params = json.loads(parameters)
+    params['sort'] = '+price'
+    params['limit'] = 100
+    params['price_threshold'] = data['price_threshold']
+    print(params)
+    search_string = [params, email]
+    DbConnectionHandler.update_search_table(search_string)
     return render_template("final.html")
 
 
