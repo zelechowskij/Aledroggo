@@ -1,0 +1,144 @@
+<html>
+<head>
+<!--    <script src="static/js/app.js"></script>-->
+    <style>
+#categoryJumbotron, #phraseJumbotron {text-align: center;}
+.input-group-text{
+  margin-left: auto!important;
+  margin-right: auto!important;
+  width: 100%!important;
+}
+.mb-3{
+  margin-left: auto!important;
+  margin-right: auto!important;
+  width: 60%!important;
+}
+.bs-example{
+        margin: 150px 50px;
+    }
+</style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+    <meta charset="UTF-8">
+	<title>Aledroggo</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="shortcut icon" href="{{ url_for('static', filename='icon.ico') }}">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Aledroggo</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Strona główna <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/search_start">Rozpocznij wyszukiwanie</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/search_history">Historia wyszukiwania</a>
+      </li>
+
+    </ul>
+  </div>
+</nav>
+
+</head>
+<body>
+        <div id = "phraseJumbotron"  class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">Filtry</h1>
+        <p class="lead">Dobranie odpowiednich filtrów to klucz do sukcesu więc wybieraj tylko te, których jesteś pewien</p><br>
+          <p class="lead">Uważaj, ponieważ sprzedawcy nie zawsze uzupełniają je dokładnie</p>
+
+
+
+    <form action="/email" method="post">
+
+{%for filter in json["filters"]%}
+        {%if filter['type'] == 'MULTI'%}
+        <div class="input-group mb-3">
+<!--          <label for="multi" class="col-sm-2 col-form-label">{{filter['name']}}</label>-->
+          <select size="3" class="custom-select custom-select-sm" name={{filter['id']}} id="multi" multiple>
+            {%for value in filter["values"]%}
+              <option value={{value['value']}}>{{value['name']}}</option>
+            {%endfor%}
+          </select>
+              <div class="input-group-append">
+    <label class="input-group-text" for="multi" >{{filter['name']}}</label>
+  </div>
+</div><br>
+        {%endif%}
+
+
+        {%if filter['type'] == 'SINGLE'%}
+<!--        <div class="input-group mb-3">-->
+<!--          <select class="custom-select custom-select-sm" id="single" name={{filter['id']}} >-->
+<!--              <option value = "brak" selected>brak</option>-->
+<!--            {%for value in filter["values"]%}-->
+<!--              <option value = {{value['value']}} >{{value['name']}}</option>-->
+<!--            {%endfor%}-->
+<!--          </select>-->
+<!--            <div class="input-group-append">-->
+<!--    <label class="input-group-text" for="single">{{filter['name']}}</label>-->
+<!--  </div>-->
+<!--</div><br>-->
+                <div class="input-group mb-3">
+<!--          <label for="multi" class="col-sm-2 col-form-label">{{filter['name']}}</label>-->
+          <select size="3" class="custom-select custom-select-sm" name={{filter['id']}} id="single" >
+              <option value = "brak" selected>brak</option>
+            {%for value in filter["values"]%}
+              <option value={{value['value']}}>{{value['name']}}</option>
+            {%endfor%}
+          </select>
+              <div class="input-group-append">
+    <label class="input-group-text" for="single">{{filter['name']}}</label>
+  </div>
+</div><br>
+
+        {%endif%}
+
+        {%if filter['type'] == 'TEXT'%}
+        <div class="input-group mb-3">
+            <input class="form-control" type="text" id='text' name={{filter['id']}}>
+            <div class="input-group-append">
+    <label class="input-group-text" for="text">{{filter['name']}}</label>
+  </div>
+  </div>
+        {%endif%}
+
+        {%if filter['type'] == 'NUMERIC'%}
+
+            {%for value in filter["values"]%}
+        <div class="input-group mb-3">
+            <input class="form-control" type="number" id="numeric" name={{filter['id'] + value['idSuffix']}} min="0"><br>
+                    <div class="input-group-append">
+    <label class="input-group-text" for="numeric">{{filter['name'] + ' ' + value['name']}}</label>
+  </div>
+        </div>
+            {%endfor%}
+        {%endif%}
+
+
+
+        {%endfor%}
+        <input type = "hidden" value = '{{(json["params"])}}' name = "params" >
+        <input type = "hidden" value = '{{(json["access_token"])}}' name = "token" >
+              <button type="submit" class="btn btn-dark mb-2">Dalej</button>
+
+    </form>
+
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

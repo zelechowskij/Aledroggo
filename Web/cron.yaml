@@ -1,0 +1,4 @@
+cron:
+- description: "allegro check"
+  url: /dQw4w9WgXcQ
+  schedule: every 3 hours

@@ -1,0 +1,7 @@
+runtime: python37
+handlers:
+- url: /.*
+  secure: always
+  script: auto
+env_variables:
+  LD_LIBRARY_PATH: "/srv/instantclient"

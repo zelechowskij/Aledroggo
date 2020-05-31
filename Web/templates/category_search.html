@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div  class="jumbotron jumbotron-fluid" id="categoryJumbotron">
+  <div class="container">
+    <h1 class="display-4">Wybór kategorii</h1>
+    <p class="lead">Teraz postaraj wybrać się jak najdokładniejszą kategorie w której znajduje się twój produkt</p>
+<div class="input-group mb-3">
+      <label for="exampleFormControlSelect1"></label>
+    <select class="form-control" id="exampleFormControlSelect1">
+        {%for categorie in data["categories"]["subcategories"]%}
+
+    <option>{{categorie["name"]}}</option>
+        {%endfor%}
+    </select>
+  <div class="input-group-append">
+    <button class="btn btn-dark" type="button" id="categoria">Dalej</button>
+  </div>
+</div>
+  </div>
+</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>
