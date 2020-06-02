@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 port = 465  # For SSL
 smtp_server = "smtp.gmail.com"
 sender_email = "aledroggo@gmail.com"  # Enter your address
-password = "Eskalopka1"
+
 
 
 def data_to_href(data):
