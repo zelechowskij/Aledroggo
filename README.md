@@ -9,4 +9,4 @@
 Everything starts with user specifying what kind of product he looks for
 
 
-![Recordit GIF](https://recordit.co/DNPIy3XFtB)
+![Recordit GIF](http://g.recordit.co/DNPIy3XFtB.gif)
