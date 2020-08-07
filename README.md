@@ -6,6 +6,7 @@
 
 ### User input
 
+Everything starts with user specifying what kind of product he looks for
 
 
 
