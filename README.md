@@ -15,8 +15,19 @@ After recieving token, aledroggo can send requests to Allegro and user can searc
 
 Front-end and back-end are deployed on Google app engine platform. Simple user interface was built mainly on Bootstrap and CSS.
 
-After user completes his part, an update is sent to Oracle database containing every search parameters. The DB itself is designed with usage of constraints as well as two distinctive users with different restrictions for safety measures.
+### Database
+
+After user completes his part, an update is sent to Oracle database containing every search parameters. The DB itself is called "Search" and it is designed with usage of constraints as well as two distinctive users with different restrictions for safety measures.
 
 ![DB](/images/1.png)
 
 Only one user can alter tables, but both can select from them.
+
+### Is it cheap yet?
+
+Independently from main app, a recurring python script is running via GCP cron jobs.
+Every hour, script selects tasks from "Search" table that are "active" and checks whether any product is cheaper then the given threshold. If so, the notification is send and the task is marked "Inactive".
+There is another table that stores every single one of the cron jobs results, thus providing posibility to eg. draw price vs time graph of tracked product.
+
+### It is cheap
+
