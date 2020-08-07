@@ -13,5 +13,7 @@ Everything starts with user specifying what kind of product he looks for
 Front-end and back-end are deployed on Google app engine platform. Simple user interface was built mainly on Bootstrap and CSS.
 
 After user completes his part, an update is sent to Oracle database containing every search parameters. The DB itself is designed with usage of constraints as well as two distinctive users with different restrictions for safety measures.
-[![INSERT YOUR GRAPHIC HERE](htps://i.ibb.co/FxbSRcb/1.png)]() 
+
+htps://i.ibb.co/FxbSRcb/1.png
+
 One of those user called Owner, can 
