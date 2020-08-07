@@ -30,4 +30,4 @@ Every hour, script selects tasks from "Search" table that are "active" and check
 There is another table that stores every single one of the cron jobs results, thus providing posibility to eg. draw price vs time graph of tracked product.
 
 ### It is cheap
-
+![Notification](/images/2.png)
