@@ -14,6 +14,6 @@ Front-end and back-end are deployed on Google app engine platform. Simple user i
 
 After user completes his part, an update is sent to Oracle database containing every search parameters. The DB itself is designed with usage of constraints as well as two distinctive users with different restrictions for safety measures.
 
-htps://i.ibb.co/FxbSRcb/1.png
+![DB](htps://i.ibb.co/FxbSRcb/1.png)
 
 One of those user called Owner, can 
