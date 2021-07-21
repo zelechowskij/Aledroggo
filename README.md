@@ -17,7 +17,7 @@ Front-end and back-end are deployed on Google app engine platform. Simple user i
 
 ### Database
 
-After user completes his part, an update is sent to Oracle database containing every search parameters. The DB itself is called "Search" and it is designed with usage of constraints as well as two distinctive users with different restrictions for safety measures.
+After user completes his part, an update is sent to Oracle database containing every search parameters. The table is called "Search" and it is designed with usage of constraints as well as two distinctive users with different restrictions for safety measures.
 
 ![DB](/images/1.png)
 
